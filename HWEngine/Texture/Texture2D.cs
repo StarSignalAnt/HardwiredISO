@@ -19,7 +19,7 @@ namespace HWEngine.Texture
         {
             // Generate texture handle
             Handle = GL.GenTexture();
-            GL.BindTexture(TextureTarget.Texture2d,Handle);
+            GL.BindTexture(TextureTarget.Texture2D,Handle);
 
             // Load image with ImageSharp
             using (var image = Image.Load<Rgba32>(path))
@@ -33,30 +33,31 @@ namespace HWEngine.Texture
 
                 // Upload to GPU
 
-                GL.TexImage2D(TextureTarget.Texture2d, 0, InternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
             }
 
 
             // Set texture parameters
-            GL.TextureParameteri(Handle, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-            GL.TextureParameteri(Handle, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-            GL.TextureParameteri(Handle, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-            GL.TextureParameteri(Handle, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
             // Generate mipmaps
-            GL.GenerateMipmap(TextureTarget.Texture2d);
+            GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
         }
 
         public void Bind(int unit=0)
         {
             GL.ActiveTexture((TextureUnit)(((int)TextureUnit.Texture0)+ unit));
-            GL.BindTexture(TextureTarget.Texture2d, Handle);
+            GL.BindTexture(TextureTarget.Texture2D, Handle);
         }
 
         public void Release(int unit=0)
         {
             GL.ActiveTexture((TextureUnit)(((int)TextureUnit.Texture0) + unit));
-            GL.BindTexture(TextureTarget.Texture2d, 0);
+            GL.BindTexture(TextureTarget.Texture2D, 0);
         }
 
         public void Dispose()
