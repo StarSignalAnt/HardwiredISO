@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36414.22 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HWGame", "HWGame.csproj", "{D6C322A8-0F91-420D-81D4-D89741BC672F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HWEngine", "..\HWEngine\HWEngine.csproj", "{B9CBE87B-9D85-49AB-9C08-9C3A5D36C11D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D6C322A8-0F91-420D-81D4-D89741BC672F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6C322A8-0F91-420D-81D4-D89741BC672F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6C322A8-0F91-420D-81D4-D89741BC672F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9CBE87B-9D85-49AB-9C08-9C3A5D36C11D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9CBE87B-9D85-49AB-9C08-9C3A5D36C11D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9CBE87B-9D85-49AB-9C08-9C3A5D36C11D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9CBE87B-9D85-49AB-9C08-9C3A5D36C11D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
