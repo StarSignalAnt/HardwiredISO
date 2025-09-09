@@ -38,6 +38,10 @@ namespace HWEngine.App
                 Close();
         }
 
+        int _nextFps = 0;
+        int _frame = 0;
+        int _fps = 0;
+
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
@@ -45,8 +49,20 @@ namespace HWEngine.App
             // Clear the screen
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            RenderApp();
+            int time = Environment.TickCount;
 
+            if(time> _nextFps)
+            {
+                _fps = _frame;
+                _frame = 0;
+                _nextFps = time + 1000;
+                Console.WriteLine("FPS:" + _fps);
+            }
+            _frame++;
+
+                RenderApp();
+
+           
             // TODO: draw your 2D objects here
 
             SwapBuffers();

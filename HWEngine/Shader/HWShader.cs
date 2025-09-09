@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -6,6 +7,9 @@ using OpenTK.Mathematics;
 public class HWShader : IDisposable
 {
     public int Handle { get; private set; }
+
+    // Dictionary to cache uniform locations
+    private readonly Dictionary<string, int> _uniformLocations = new Dictionary<string, int>();
 
     public HWShader(string vertexPath, string fragmentPath)
     {
@@ -41,11 +45,48 @@ public class HWShader : IDisposable
         GL.DetachShader(Handle, fragmentShader);
         GL.DeleteShader(vertexShader);
         GL.DeleteShader(fragmentShader);
+
+        // Populate the uniform cache
+        CacheAllUniformLocations();
+    }
+
+    // Method to find and cache all uniform locations in the shader program.
+    private void CacheAllUniformLocations()
+    {
+        GL.GetProgram(Handle, GetProgramParameterName.ActiveUniforms, out int uniformCount);
+
+        for (int i = 0; i < uniformCount; i++)
+        {
+            string name = GL.GetActiveUniform(Handle, i, out _, out _);
+            int location = GL.GetUniformLocation(Handle, name);
+            if (location != -1)
+            {
+                _uniformLocations[name] = location;
+            }
+        }
     }
 
     public void Use() => GL.UseProgram(Handle);
 
     public virtual void Bind() => Use();
+
+    // Helper method to get uniform location from cache or query OpenGL
+    private int GetUniformLocation(string name)
+    {
+        if (_uniformLocations.TryGetValue(name, out int location))
+        {
+            return location;
+        }
+
+        // If not in cache, try to get it. This handles uniforms that might be added later,
+        // though it's less efficient. The initial caching should cover most cases.
+        location = GL.GetUniformLocation(Handle, name);
+        if (location != -1)
+        {
+            _uniformLocations[name] = location;
+        }
+        return location;
+    }
 
     private void CheckShaderCompile(int shader, string type)
     {
@@ -71,37 +112,37 @@ public class HWShader : IDisposable
 
     public void SetInt(string name, int value)
     {
-        int location = GL.GetUniformLocation(Handle, name);
+        int location = GetUniformLocation(name);
         if (location != -1) GL.Uniform1(location, value);
     }
 
     public void SetFloat(string name, float value)
     {
-        int location = GL.GetUniformLocation(Handle, name);
+        int location = GetUniformLocation(name);
         if (location != -1) GL.Uniform1(location, value);
     }
 
     public void SetVector2(string name, Vector2 value)
     {
-        int location = GL.GetUniformLocation(Handle, name);
+        int location = GetUniformLocation(name);
         if (location != -1) GL.Uniform2(location, value);
     }
 
     public void SetVector3(string name, Vector3 value)
     {
-        int location = GL.GetUniformLocation(Handle, name);
+        int location = GetUniformLocation(name);
         if (location != -1) GL.Uniform3(location, value);
     }
 
     public void SetVector4(string name, Vector4 value)
     {
-        int location = GL.GetUniformLocation(Handle, name);
+        int location = GetUniformLocation(name);
         if (location != -1) GL.Uniform4(location, value);
     }
 
     public void SetMatrix4(string name, Matrix4 value, bool transpose = false)
     {
-        int location = GL.GetUniformLocation(Handle, name);
+        int location = GetUniformLocation(name);
         if (location != -1) GL.UniformMatrix4(location, transpose, ref value);
     }
 

@@ -29,11 +29,23 @@ namespace HWGame.Game
             int b = 5;
         }
 
+        Random rnd = new Random();
+
         public override void RenderApp()
         {
+
             
-            _Draw.Image(tex1, new Vector2(20, 20), new Vector2(128, 128),BlendMode.Solid, new Vector4(1, 1, 1, 1));
-            _Draw.Rect(new Vector2(20, 5), new Vector2(128, 128), BlendMode.Additive, new Vector4(1.0f, 0.0f, 0, 1.0f));
+
+            for (int i = 0; i < 1000; i++)
+            {
+
+                int x = rnd.Next(0, 800);
+                int y = rnd.Next(0, 600);
+                _Draw.Image(tex1, new Vector2(x, y), new Vector2(128, 128), BlendMode.Alpha, new Vector4(1, 1, 1, 1));
+                //            _Draw.Rect(new Vector2(20, 5), new Vector2(128, 128), BlendMode.Additive, new Vector4(1.0f, 0.0f, 0, 1.0f));
+            }
+
+            _Draw.Flush();
 
         }
 
