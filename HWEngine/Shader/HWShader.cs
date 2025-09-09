@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 
 public class HWShader : IDisposable
 {
@@ -42,15 +43,9 @@ public class HWShader : IDisposable
         GL.DeleteShader(fragmentShader);
     }
 
-    public void Use()
-    {
-        GL.UseProgram(Handle);
-    }
+    public void Use() => GL.UseProgram(Handle);
 
-    public virtual void Bind()
-    {
-        Use();
-    }
+    public virtual void Bind() => Use();
 
     private void CheckShaderCompile(int shader, string type)
     {
@@ -70,6 +65,44 @@ public class HWShader : IDisposable
             string infoLog = GL.GetProgramInfoLog(program);
             Console.WriteLine($"ERROR::PROGRAM_LINKING_ERROR:\n{infoLog}\n");
         }
+    }
+
+    // ---------------- Uniform setters ----------------
+
+    public void SetInt(string name, int value)
+    {
+        int location = GL.GetUniformLocation(Handle, name);
+        if (location != -1) GL.Uniform1(location, value);
+    }
+
+    public void SetFloat(string name, float value)
+    {
+        int location = GL.GetUniformLocation(Handle, name);
+        if (location != -1) GL.Uniform1(location, value);
+    }
+
+    public void SetVector2(string name, Vector2 value)
+    {
+        int location = GL.GetUniformLocation(Handle, name);
+        if (location != -1) GL.Uniform2(location, value);
+    }
+
+    public void SetVector3(string name, Vector3 value)
+    {
+        int location = GL.GetUniformLocation(Handle, name);
+        if (location != -1) GL.Uniform3(location, value);
+    }
+
+    public void SetVector4(string name, Vector4 value)
+    {
+        int location = GL.GetUniformLocation(Handle, name);
+        if (location != -1) GL.Uniform4(location, value);
+    }
+
+    public void SetMatrix4(string name, Matrix4 value, bool transpose = false)
+    {
+        int location = GL.GetUniformLocation(Handle, name);
+        if (location != -1) GL.UniformMatrix4(location, transpose, ref value);
     }
 
     public void Dispose()

@@ -24,11 +24,15 @@ namespace HWEngine.App
             // Enable alpha blending for 2D sprites
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            GL.Viewport(0,0,800,600);
+            InitApp();
+
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
+            UpdateApp();
 
             if (KeyboardState.IsKeyDown(Keys.Escape))
                 Close();
@@ -40,6 +44,8 @@ namespace HWEngine.App
 
             // Clear the screen
             GL.Clear(ClearBufferMask.ColorBufferBit);
+
+            RenderApp();
 
             // TODO: draw your 2D objects here
 
@@ -58,6 +64,20 @@ namespace HWEngine.App
             // Free GL resources (shaders, textures, VAOs, etc.)
         }
 
+        public virtual void InitApp()
+        {
+
+        }
+
+        public virtual void UpdateApp()
+        {
+
+        }
+
+        public virtual void RenderApp()
+        {
+
+        }
 
     }
 }

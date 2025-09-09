@@ -15,7 +15,7 @@ namespace HWGame
             var nws = new NativeWindowSettings
             {
                 Size = new Vector2i(800, 600),
-                Title = "OpenTK 5 Preview - My 2D Game"
+                Title = "HardWired"
             };
 
             using (var game = new HardWired(gws, nws))
