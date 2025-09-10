@@ -8,6 +8,8 @@ namespace HWEngine.App
 {
     public class HWApp : GameWindow
     {
+        public static int ScreenWidth = 800;
+        public static int ScreenHeight = 600;
 
         public HWApp(GameWindowSettings gws, NativeWindowSettings nws)
            : base(gws, nws)

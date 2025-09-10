@@ -9,6 +9,7 @@ using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using HWEngine.Draw;
 using HWEngine.Texture;
+using HWEngine.Map;
 
 namespace HWGame.Game
 {
@@ -18,10 +19,16 @@ namespace HWGame.Game
         Texture2D tex2;
         Drawer _Draw;
 
+        GameMap map1;
+
+        List<GameTile> Tiles = new List<GameTile>();
+
         public HardWired(GameWindowSettings gws, NativeWindowSettings nws)
            : base(gws, nws)
         {
         }
+
+        List<Texture2D> tex;
 
         public override void InitApp()
         {
@@ -31,6 +38,34 @@ namespace HWGame.Game
             tex2 = new Texture2D("Test/img2.png");
             int b = 5;
 
+            //HWEngine.Map.TileSetLoader tload = new HWEngine.Map.TileSetLoader();
+            
+            tex = TileSetLoader.LoadTileSet("test/tiles3.png",64,64);
+
+            foreach(var t in tex)
+            {
+                Tiles.Add(new GameTile(t, TileType.Ground, new Vector4(1f, 1f, 1f, 1f)));
+            }
+
+
+            map1 = new GameMap(12, 12, 3,64,32);
+
+            for(int y = 0; y < 12; y++)
+            {
+                for(int x = 0; x < 12; x++)
+                {
+                    var tile = Tiles[2];
+                    map1.SetTile(x, y, 0, tile);
+                }
+            }
+            map1.SetTile(2, 2,0, Tiles[0]);
+            map1.SetTile(3, 2, 0, Tiles[0]);
+            map1.SetTile(4, 2, 0, Tiles[0]);
+
+            map1.SetTile(2, 4, 0, Tiles[0]);
+            map1.SetTile(3, 5, 0, Tiles[0]);
+
+
         }
 
         Random rnd = new Random();
@@ -39,35 +74,37 @@ namespace HWGame.Game
         {
 
 
+            map1.CamX = 450;
+            map1.CamY = 100;
+
+            map1.RenderMap();
+
+            return;
             int x = 5;
 
 
             bool im = false;
 
-            for (int i = 0; i < 10; i++)
+
+            int dx = 32;
+            int dy = 32;
+            foreach (var t in tex)
             {
 
 
-                //int x = rnd.Next(0, 800);
-                //int y = rnd.Next(0, 600);
-                int y = 40;
+                _Draw.Image(t,new Vector2(dx,dy),new Vector2(128,128),BlendMode.Alpha,new Vector4(1f,1f,1f,1f));
 
-                Texture2D dt = tex1;
-                if (im)
+                dx = dx + 128;
+                if (dx >= 800 - 128)
                 {
-                    dt = tex1;
+                    dx = 32;
+                    dy = dy + 128;
                 }
-                else
-                {
-                    dt = tex2;
-                }
-                    _Draw.Image(dt, new Vector2(x, y), new Vector2(128, 128), BlendMode.Alpha, new Vector4(1, 1, 1, 1));
-                //            _Draw.Rect(new Vector2(20, 5), new Vector2(128, 128), BlendMode.Additive, new Vector4(1.0f, 0.0f, 0, 1.0f));
-                x = x + 64;
-                im = im ? false : true;
+
             }
 
-            _Draw.Flush();
+
+            //_Draw.Flush();
 
         }
 
