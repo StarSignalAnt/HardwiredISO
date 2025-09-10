@@ -89,7 +89,7 @@ namespace HWEngine.Map
                             drawY += CamY;
 
                             // Draw the full 64x64 texture at the adjusted position
-                            drawer.Image(tile.Texture, new Vector2(drawX, drawY), new Vector2(64, 64), BlendMode.Alpha, tile.Color);
+                            drawer.Image(tile.Texture, new Vector2(drawX, drawY), new Vector2(TileWidth,TileHeight*2), BlendMode.Alpha, tile.Color);
                         }
                     }
                 }

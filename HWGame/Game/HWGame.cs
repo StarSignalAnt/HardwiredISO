@@ -48,28 +48,35 @@ namespace HWGame.Game
             }
 
 
-            map1 = new GameMap(12, 12, 3,64,32);
+            map1 = new GameMap(12, 12, 6,128,64);
 
             for(int y = 0; y < 12; y++)
             {
                 for(int x = 0; x < 12; x++)
                 {
-                    var tile = Tiles[2];
+                    var tile = Tiles[50];
                     map1.SetTile(x, y, 0, tile);
                 }
             }
             map1.SetTile(2, 2,0, Tiles[0]);
             map1.SetTile(3, 2, 0, Tiles[0]);
             map1.SetTile(4, 2, 0, Tiles[0]);
-            map1.SetTile(2, 2, 1, Tiles[0]);
-            map1.SetTile(3, 2, 1, Tiles[0]);
-            map1.SetTile(4, 2, 1, Tiles[0]);
+            map1.SetTile(2, 2, 1, Tiles[11]);
+            map1.SetTile(3, 2, 1, Tiles[11]);
+            map1.SetTile(4, 2, 1, Tiles[11]);
+            map1.SetTile(2, 1, 0, Tiles[0]);
+            map1.SetTile(3, 1, 0, Tiles[0]);
+            map1.SetTile(4, 1, 0, Tiles[0]);
+            // map1.SetTile(2, 1, 1, Tiles[12]);
+            // map1.SetTile(3, 1, 1, Tiles[12]);
+            // map1.SetTile(4, 1, 1, Tiles[12]);
 
 
-
-            map1.SetTile(2, 4, 0, Tiles[0]);
-            map1.SetTile(3, 5, 0, Tiles[0]);
-
+            for (int i = 0; i < 6; i++)
+            {
+                map1.SetTile(3, 5, i, Tiles[0]);
+                map1.SetTile(6, 5, i, Tiles[0]);
+            }
 
         }
 

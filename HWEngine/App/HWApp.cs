@@ -22,13 +22,14 @@ namespace HWEngine.App
 
             // Set clear color
             GL.ClearColor(0.1f, 0.2f, 0.3f, 1.0f);
-
+            ScreenWidth = Size.X;
+            ScreenHeight = Size.Y;
             // Enable alpha blending for 2D sprites
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-            GL.Viewport(0,0,800,600);
+            GL.Viewport(0,0,ScreenWidth,ScreenHeight);
             InitApp();
-
+     
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -74,6 +75,9 @@ namespace HWEngine.App
         {
             base.OnResize(e);
             GL.Viewport(0, 0, Size.X, Size.Y);
+            ScreenWidth = Size.X;
+            ScreenHeight = Size.Y;
+
         }
 
         protected override void OnUnload()

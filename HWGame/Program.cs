@@ -14,7 +14,7 @@ namespace HWGame
             var gws = GameWindowSettings.Default;
             var nws = new NativeWindowSettings
             {
-                Size = new Vector2i(800, 600),
+                Size = new Vector2i(1400, 950),
                 Title = "HardWired"
             };
 
