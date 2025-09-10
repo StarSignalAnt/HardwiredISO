@@ -10,13 +10,13 @@ namespace HWEngine.Draw
 
     public enum BlendMode
     {
-        Solid,Alpha,Additive
+        Solid, Alpha, Additive
     }
 
     public class DrawCall
     {
-        public Vector2 Position; // New property for position
-        public Vector2 Size; // New property for size
+        public Vector2 Position;
+        public Vector2 Size;
         public Texture2D Texture;
         public Vector4 Color;
         public BlendMode BlendMode;
@@ -42,18 +42,9 @@ namespace HWEngine.Draw
         private List<DrawCall> _calls = new List<DrawCall>();
         public void AddCall(DrawCall call) => _calls.Add(call);
         public void Clear() => _calls.Clear();
-        public List<DrawCall> GetSortedCalls()
+        public List<DrawCall> GetCalls()
         {
-            // Sort by Texture, then by BlendMode. This ensures calls with the
-            // same state are contiguous, minimizing state changes.
-            _calls.Sort((a, b) =>
-            {
-                if (a.Texture?.Handle != b.Texture?.Handle)
-                {
-                    return (a.Texture?.Handle ?? -1).CompareTo(b.Texture?.Handle ?? -1);
-                }
-                return a.BlendMode.CompareTo(b.BlendMode);
-            });
+            // No sorting is performed, so the calls are returned in the order they were added.
             return _calls;
         }
     }
@@ -64,7 +55,6 @@ namespace HWEngine.Draw
         public Vector2 TexCoord;
         public Vector4 Color;
 
-        // Corrected SizeInBytes method
         public static int SizeInBytes()
         {
             return Vector2.SizeInBytes + Vector2.SizeInBytes + Vector4.SizeInBytes;
@@ -103,7 +93,6 @@ namespace HWEngine.Draw
             GL.BindVertexArray(_vao);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
-            // Use the corrected static method
             GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vertex.SizeInBytes(), IntPtr.Zero, BufferUsageHint.DynamicDraw);
 
             uint[] indices = new uint[MAX_QUADS * 6];
@@ -144,8 +133,8 @@ namespace HWEngine.Draw
                 Color = color ?? new Vector4(1f, 1f, 1f, 1f),
                 BlendMode = blend,
                 IsRect = false,
-                TexCoordMin = new Vector2(1, 1),
-                TexCoordMax = new Vector2(0, 0)
+                TexCoordMin = new Vector2(0, 0),
+                TexCoordMax = new Vector2(1, 1)
             };
             _drawList.AddCall(call);
         }
@@ -166,13 +155,13 @@ namespace HWEngine.Draw
         public void Flush()
         {
             GL.Viewport(0, 0, _screenWidth, _screenHeight);
-            var sortedCalls = _drawList.GetSortedCalls();
+            var calls = _drawList.GetCalls();
             Texture2D currentTexture = null;
             BlendMode currentBlendMode = BlendMode.Solid;
 
-            for (int i = 0; i < sortedCalls.Count; i++)
+            for (int i = 0; i < calls.Count; i++)
             {
-                var call = sortedCalls[i];
+                var call = calls[i];
 
                 if (call.Texture != currentTexture || call.BlendMode != currentBlendMode || _quadCount >= MAX_QUADS)
                 {
@@ -219,7 +208,7 @@ namespace HWEngine.Draw
             :
             new Vector2[]
             {
-                new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0), new Vector2(0, 0)
+                new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1)
             };
 
             for (int i = 0; i < QUAD_VERTEX_COUNT; i++)
