@@ -61,6 +61,11 @@ namespace HWGame.Game
             map1.SetTile(2, 2,0, Tiles[0]);
             map1.SetTile(3, 2, 0, Tiles[0]);
             map1.SetTile(4, 2, 0, Tiles[0]);
+            map1.SetTile(2, 2, 1, Tiles[0]);
+            map1.SetTile(3, 2, 1, Tiles[0]);
+            map1.SetTile(4, 2, 1, Tiles[0]);
+
+
 
             map1.SetTile(2, 4, 0, Tiles[0]);
             map1.SetTile(3, 5, 0, Tiles[0]);
